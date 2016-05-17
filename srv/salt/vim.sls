@@ -1,0 +1,4 @@
+vim-enhanced:
+  pkg:
+    -  installed
+
