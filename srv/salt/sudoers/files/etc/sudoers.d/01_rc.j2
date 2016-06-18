@@ -1,0 +1,3 @@
+{% set sudoers = pillar.get('sudoers', {}) %}
+User_Alias RC = {{ sudoers|join(' ,') }}
+RC	ALL = (ALL) ALL 

@@ -1,0 +1,3 @@
+sudoers:
+  - ac
+  - bc
