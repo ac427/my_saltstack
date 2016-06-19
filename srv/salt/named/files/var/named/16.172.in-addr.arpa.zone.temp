@@ -1,0 +1,13 @@
+$TTL 1W
+@               IN SOA          master.cm.cluster.   root.cm.cluster. (
+                                1               ; serial
+                                2D              ; refresh
+                                4H              ; retry
+                                6W              ; expiry
+                                1W )            ; minimum
+
+                IN NS           master.cm.cluster.
+0.0             IN PTR          cm.cluster.
+254.1           IN PTR          master.cm.cluster.
+2.101           IN PTR          compute1.cm.cluster.
+2.102           IN PTR          compute2.cm.cluster.

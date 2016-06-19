@@ -1,0 +1,44 @@
+{% set config = pillar.get('named', {}) -%}
+{% set nodes = pillar.get('nodes', {}) -%}
+
+options {
+  directory "/var/named";
+  dump-file "/var/log/named_dump.db";
+  statistics-file "/var/log/named.stats";
+  forwarders {
+    8.8.8.8;
+    8.8.4.4;
+  };
+  forward only;
+  listen-on-v6 { any; };
+  allow-query {
+    127.0.0.1;
+    172.16.0.0/16;
+  };
+  notify no;
+  include "/etc/named.conf.global.options.include";
+};
+
+zone "." in {
+  type hint;
+  file "root.hint";
+};
+
+zone "localhost" in {
+  type master;
+  file "localhost.zone";
+};
+
+zone "0.0.127.in-addr.arpa" in {
+  type master;
+  file "0.0.127.in-addr.arpa.zone";
+};
+
+{%- for name in config['zone'] %}
+zone "{{ name }}" in { 
+  type master;
+  file "{{ config['zone'][name]['file'] }}";
+  allow-update { any; };
+  notify no;
+};
+{%- endfor %}

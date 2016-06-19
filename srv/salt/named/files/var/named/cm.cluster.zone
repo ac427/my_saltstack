@@ -1,0 +1,14 @@
+$TTL 1W
+@               IN SOA          master.cm.cluster.   root.cm.cluster. (
+                                1               ; serial
+                                2D              ; refresh
+                                4H              ; retry
+                                6W              ; expiry
+                                1W )            ; minimum
+
+                IN NS           master.cm.cluster.
+                IN A            172.16.1.254
+master          IN A            172.16.1.254
+compute1         IN A            172.16.0.27
+compute2        IN A            172.16.0.28
+

@@ -9,3 +9,5 @@ base:
   'admin':
     - squid
     - dhcpd
+    - tftpd
+    - named
