@@ -1,0 +1,54 @@
+{% set config = pillar.get('dhcpd', {}) -%}
+{% set nodes = pillar.get('nodes', {}) -%}
+
+ddns-update-style interim;
+
+allow booting;
+allow bootp;
+
+ignore client-updates;
+set vendorclass = option vendor-class-identifier;
+
+option pxe-system-type code 93 = unsigned integer 16;
+
+subnet 172.16.0.0 netmask 255.255.0.0 {
+
+     option domain-name         "{{ config['domain-name'] }} ";
+     option domain-name-servers {{config['domain-name-servers']}};
+     option subnet-mask         {{ config['subnet-mask']}};
+     range dynamic-bootp        {{ config['range'] }};
+     default-lease-time         21600;
+     max-lease-time             43200;
+     deny 			unknown-clients;
+     next-server                {{ config['next-server'] }};
+     class "pxeclients" {
+          match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
+          if option pxe-system-type = 00:02 {
+                  filename "ia64/elilo.efi";
+          } else if option pxe-system-type = 00:06 {
+                  filename "grub/grub-x86.efi";
+          } else if option pxe-system-type = 00:07 {
+                  filename "grub/grub-x86_64.efi";
+          } else {
+                  filename "pxelinux.0";
+          }
+     }
+
+}
+
+
+
+group {
+{%- for node in nodes %}
+  host {{ node }}.{{nodes[node]['interface']}} {
+   hardware ethernet {{nodes[node]['mac']}} ;
+   fixed-address {{nodes[node]['ip']}} ;
+   option host-name "{{ node }}";
+   filename "/pxelinux.0";
+   next-server {{config['next-server']}};
+  }
+{%- endfor %}
+
+
+}
+

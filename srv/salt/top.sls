@@ -8,3 +8,4 @@ base:
     - epel
   'admin':
     - squid
+    - dhcpd

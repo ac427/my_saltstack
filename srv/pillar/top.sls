@@ -1,4 +1,5 @@
 base:
   '*':
-    - compute
+    - nodes
     - sudoers
+    - dhcpd
