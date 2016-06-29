@@ -3,4 +3,4 @@ base:
     - nodes
     - sudoers
     - dhcpd
-    - named
+    - cluster

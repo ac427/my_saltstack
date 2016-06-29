@@ -1,4 +1,4 @@
-{% from "dhcpd/map.jinja" import dhcpd with context %}
+#{% from "dhcpd/map.jinja" import dhcpd with context %}
 
 #/tmp/dhcpd.conf:
 /etc/dhcp/dhcpd.conf:
@@ -11,16 +11,10 @@
     - check_cmd: dhcpd -t -cf 
     - context:
         included: False
+
 {{ dhcpd.service }}:
   service.running:
     - enable: True
     - restart: True
     - watch:
       - file: /etc/dhcp/dhcpd.conf
-
-#    - watch:
-#      - pkg: dhcp
-#    - require:
-#      - {{ dhcpd.server }}:
-#        pkg:
-#          -  installed
