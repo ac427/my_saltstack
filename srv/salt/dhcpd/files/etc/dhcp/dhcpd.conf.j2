@@ -11,6 +11,7 @@ subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets']
   max-lease-time 43200;
 
 {%- for dhcp_group in cluster['subnets'][subnet]['dhcp_groups'] %} 
+
 #{{ dhcp_group }}
   group {
     filename "/pxelinux.0";
@@ -27,7 +28,7 @@ subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets']
         hardware ethernet {{ compute_nodes[node]['interfaces'][subnet]['mac'] }};
         fixed-address {{cluster['subnets'][subnet]['netid']}}.{{compute_nodes[node]['hostid'] }}; }
         
-{%- endif %} {# end if #}
+{% endif %} {# end if #}
 {%- endfor %} {# end of node loop #} 
   }
 {%- endfor %} {# end of dhcp_group loop #} 

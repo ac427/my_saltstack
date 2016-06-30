@@ -5,7 +5,7 @@ compute_nodes:
         dhcp_group: uefi
         mac: 08:00:27:cb:ed:16
       ipmi:
-        mac: 08:00:27:cb:ed:17
+        mac: 07:00:27:cb:ed:17
       ipoib:
         mac: 08:00:27:cb:ed:19
     hostid: 2.101
