@@ -1,9 +1,4 @@
 {% set dhcpd = salt['grains.filter_by']({
-    'Arch': {
-        'server': 'dhcp',
-        'service': 'dhcpd4',
-        'config': '/etc/dhcpd.conf',
-    },
     'Debian': {
         'server': 'isc-dhcp-server',
         'service': 'isc-dhcp-server',
@@ -13,15 +8,5 @@
         'server': 'dhcp',
         'service': 'dhcpd',
         'config': '/etc/dhcp/dhcpd.conf',
-    },
-    'FreeBSD': {
-        'server': 'isc-dhcp43-server',
-        'service': 'isc-dhcpd',
-        'config': '/usr/local/etc/dhcpd.conf'
-    },
-    'Suse': {
-        'server': 'dhcp-server',
-        'service': 'dhcpd',
-        'config': '/etc/dhcpd.conf',
     },
 }, merge=salt['pillar.get']('dhcpd:lookup')) %}

@@ -1,24 +1,31 @@
 cluster:
   domain-name-servers: 172.16.1.11
   next-server: 172.16.1.11
-  internal: 172.16
-  ipmi: 192.16
 
-  zones:
+  subnets:
     internal:
+      netid: 172.16
+      name: eth.cluster
       eth.cluster:
         file: internal.cluster.zone
-      16.172.in-addr:
+      zone: 
+        name: 16.172.in-addr
         file: 16.172.in-addr.arpa
-      netmask: 255.255.0.0
       network: 172.16.0.0
-      domain-name: internal.cluster
+      netmask: 255.255.0.0
+      dhcp_groups:
+        - uefi
+        - legacy
 
     ipmi:
+      netid: 192.168
+      name: ipmi.cluster
       ipmi.cluster:
         file: ipmi.cluster.zone
-      16.172.in-addr:
+      zone: 
+        name: 16.192.in-addr
         file: 16.192.in-addr.arpa
-      netmask: 255.255.0.0
       network: 192.16.0.0
-      domain-name: ipmi.cluster
+      netmask: 255.255.0.0
+      dhcp_groups:
+        - legacy

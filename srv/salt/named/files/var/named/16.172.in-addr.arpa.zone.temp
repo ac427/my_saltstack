@@ -1,13 +1,22 @@
-$TTL 1W
-@               IN SOA          master.cm.cluster.   root.cm.cluster. (
-                                1               ; serial
-                                2D              ; refresh
-                                4H              ; retry
-                                6W              ; expiry
-                                1W )            ; minimum
+{% set nodes = pillar.get('nodes', {}) -%}
+{% set cluster = pillar.get('cluster', {}) -%}
+{% for serial = salt['cmd.run']('date +%s') %}
+$TTL 300
+@                       IN      SOA     172.16.1.11. master.home. (
+                                        {{ serial}}  ; Serial
+                                        600         ; Refresh
+                                        1800         ; Retry
+                                        604800       ; Expire
+                                        300          ; TTL
+                                        )
 
-                IN NS           master.cm.cluster.
-0.0             IN PTR          cm.cluster.
-254.1           IN PTR          master.cm.cluster.
-2.101           IN PTR          compute1.cm.cluster.
-2.102           IN PTR          compute2.cm.cluster.
+                        IN      NS      172.16.1.11.
+
+
+salt  CNAME  admin;
+
+
+11   IN  PTR  admin.home.;
+200  IN  PTR  compute1.home.;
+
+

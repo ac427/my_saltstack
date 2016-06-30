@@ -1,65 +1,30 @@
-{% from "dhcpd/map.jinja" import dhcpd with context %}
-
-{% set nodes = pillar.get('nodes', {}) -%}
+{% set computes_nodes = pillar.get('computes_nodes', {}) -%}
 {% set cluster = pillar.get('cluster', {}) -%}
 
+ddns-update-style none;
 
-ddns-update-style interim;
-
-allow booting;
-allow bootp;
-
-ignore client-updates;
-set vendorclass = option vendor-class-identifier;
-
-option pxe-system-type code 93 = unsigned integer 16;
-
-shared-network lan {
-
-
-{%- for networks in cluster['zones'] %}
-
-subnet {{ cluster['zones'][networks]['network'] }} netmask {{ cluster['zones'][networks]['netmask'] }}   {
-     
-     option domain-name         "{{ cluster['zones'][networks]['domain-name'] }} ";
-     option domain-name-servers {{ cluster['domain-name-servers'] }};
-     option subnet-mask         255.255.0.0;
-     default-lease-time         21600;
-     max-lease-time             43200;
-     deny 			unknown-clients;
-     next-server                {{ cluster['next-server'] }};
-
+{% for subnet in cluster['subnets'] %}
+subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets'][subnet]['netmask'] }} {
+  option domain-name "{{ cluster['subnets'][subnet]['name'] }}";
+  option domain-name-servers {{ cluster['domain-name-servers'] }};
+  option subnet-mask 255.255.0.0;
+  default-lease-time 21600;
+  max-lease-time 43200;
+ 
+{%- for dhcp_group in cluster['subnets'][subnet]['dhcp_groups'] %} 
+#{{ dhcp_group }}
+  group {
+    filename "/pxelinux.0";
+    next-server  {{ cluster['next-server'] }};
+ 
+{%- for node in computes_nodes %} 
+{%- if compute_nodes[node]['interfaces'][subnet][dhcp_groups] == dhcp_group %}
+    host {{ node }}.{{ cluster['subnets'][subnet]['name'] }} {
+        hardware ethernet {{ computes_nodes[node]['interfaces'][subnet]['mac'] }};
+        fixed-address {{cluster['subnets'][subnet]['netid']}}.{{computes_nodes[node]['hostid'] }}; }
+{%- endif %}
+{%- endfor %} {# end of node loop #} 
+  }
+{%- endfor %} {# end of dhcp_group loop #} 
 }
-
-{%- endfor %}
-
-group {
-{%- for node in nodes %}
-    host {{ node }}.internal {
-        hardware ethernet {{ nodes[node]['interface']['internal']['mac'] }};
-        fixed-address {{cluster['internal']}}.{{nodes[node]['netid'] }};
-        option host-name " {{ node }}.internal";
-        filename "/pxelinux.0";
-        next-server  {{ cluster['next-server'] }};
-    
-   }
-{%- endfor %}
-}
-
-
-
-group {
-{%- for node in nodes %}
-    host {{ node }}.ipmi {
-        hardware ethernet {{ nodes[node]['interface']['ipmi']['mac'] }};
-        fixed-address {{cluster['ipmi']}}.{{nodes[node]['netid'] }};
-        option host-name "{{ node }}.ipmi";
-        filename "/pxelinux.0";
-        next-server  {{ cluster['next-server'] }};
-   }
-{%- endfor %}
-}
-
-
-}
-
+{%- endfor %} {# end of subnet loop #} 

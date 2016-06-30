@@ -1,4 +1,4 @@
-{% set config = pillar.get('named', {}) -%}
+{% set cluster = pillar.get('cluster', {}) -%}
 {% set nodes = pillar.get('nodes', {}) -%}
 
 options {
@@ -34,11 +34,14 @@ zone "0.0.127.in-addr.arpa" in {
   file "0.0.127.in-addr.arpa.zone";
 };
 
-{%- for name in config['zone'] %}
-zone "{{ name }}" in { 
-  type master;
-  file "{{ config['zone'][name]['file'] }}";
-  allow-update { any; };
-  notify no;
+
+{%- for networks in cluster['subnets'] %}
+
+zone "{{ cluster['subnets'][networks]['zone']['name'] }}" in {
+     type master;
+     file "{{ cluster['subnets'][networks]['zone']['name'] }}"
+     allow-update { any; };
+    notify no;
 };
 {%- endfor %}
+
