@@ -9,7 +9,7 @@ compute_nodes:
       ipoib:
         dhcp_group: uefi
         mac: 08:00:27:cb:ed:19
-    hostid: 2.101
+    hostid: 1.101
 
   compute2:
     interfaces:
@@ -27,10 +27,10 @@ compute_nodes:
   compute3:
     interfaces:
       internal:
-        mac: 08:00:27:cb:ed:12
+        mac: 08:00:27:cb:ed:09
       ipmi:
-        mac: 08:00:27:cb:ed:13
+        mac: 08:00:27:cb:ed:10
       ipoib:
-        mac: 08:00:27:cb:ed:14
-    hostid: 2.102
+        mac: 08:00:27:cb:ed:11
+    hostid: 3.102
     

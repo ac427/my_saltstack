@@ -3,6 +3,7 @@
 
 ddns-update-style none;
 
+{% set inc=0 %}
 {% for subnet in cluster['subnets'] %}
 # subnet {{ subnet }}
 subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets'][subnet]['netmask'] }} {

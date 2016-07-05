@@ -15,4 +15,4 @@ make sure dhcpd is installed:
     - mode: 440
     - template: jinja
     - source: salt://dhcpd/files/etc/dhcp/dhcpd.conf.j2
- #   - check_cmd: dhcpd -t
+    - check_cmd: dhcpd -t
