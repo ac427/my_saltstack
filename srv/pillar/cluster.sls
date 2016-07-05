@@ -30,3 +30,17 @@ cluster:
       dhcp_groups:
         - uefi
         - legacy
+
+    ipoib:
+      netid: 172.17
+      name: ipmi.cluster
+      ipmi.cluster:
+        file: ipmi.cluster.zone
+      zone:
+        name: 17.172.in-addr
+        file: 17.172.in-addr.arpa
+      network: 172.17.0.0
+      netmask: 255.255.0.0
+      dhcp_groups:
+        - uefi
+        - legacy
