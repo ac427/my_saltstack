@@ -4,6 +4,7 @@
 ddns-update-style none;
 
 {% for subnet in cluster['subnets'] %}
+# subnet {{ subnet }}
 subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets'][subnet]['netmask'] }} {
   option domain-name "{{ cluster['subnets'][subnet]['name'] }}";
   option domain-name-servers {{ cluster['domain-name-servers'] }};
@@ -16,9 +17,8 @@ subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets']
   group {
     filename "/pxelinux.0";
     next-server  {{ cluster['next-server'] }};
- 
 {%- for node in compute_nodes %} 
-{% if compute_nodes[node]['interfaces'][subnet]['dhcp_group'] is undefined %}
+{%- if compute_nodes[node]['interfaces'][subnet]['dhcp_group'] is defined and compute_nodes[node]['interfaces'][subnet]['dhcp_group'] == dhcp_group %}
     host {{ node }}.{{ cluster['subnets'][subnet]['name'] }} {
         hardware ethernet {{ compute_nodes[node]['interfaces'][subnet]['mac'] }};
         fixed-address {{cluster['subnets'][subnet]['netid']}}.{{compute_nodes[node]['hostid'] }}; }
@@ -26,13 +26,10 @@ subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets']
 {%- endfor %} {# end of node loop #} 
   }
 {%- endfor %} {# end of dhcp_group loop #} 
-
-
 # default 
   group {
     filename "/pxelinux.1";
     next-server  {{ cluster['next-server'] }};
-
 {%- for node in compute_nodes %}
 {%- if compute_nodes[node]['interfaces'][subnet]['dhcp_group'] is undefined  %}
     host {{ node }}.{{ cluster['subnets'][subnet]['name'] }} {
@@ -41,6 +38,5 @@ subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets']
 {%- endif %}
 {%- endfor %} {# end of node loop #}
   }
-
 }
 {%- endfor %} {# end of subnet loop #} 
