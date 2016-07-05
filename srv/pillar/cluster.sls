@@ -14,7 +14,7 @@ cluster:
       network: 172.16.0.0
       netmask: 255.255.0.0
       dhcp_groups:
-        - default
+        - uefi
         - legacy
 
     ipmi:
@@ -28,4 +28,5 @@ cluster:
       network: 192.16.0.0
       netmask: 255.255.0.0
       dhcp_groups:
-        - default
+        - uefi
+        - legacy
