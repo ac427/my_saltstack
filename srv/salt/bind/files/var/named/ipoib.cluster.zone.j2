@@ -1,0 +1,34 @@
+{% set serial = pillar.get('serial', {}) -%}
+{% set compute_nodes = pillar.get('compute_nodes', {}) -%}
+{% set cluster = pillar.get('cluster', {}) -%}
+
+$TTL 1W
+@               IN SOA          master.eth.cluster.   root.eth.cluster. (
+                                {{ serial }}               ; serial
+                                2D              ; refresh
+                                4H              ; retry
+                                6W              ; expiry
+                                1  )            ; minimum
+
+                IN NS           {{ cluster['name-server'] }}.
+
+{% set count = 0 %}
+{% set start = 1 %}
+{% set max = cluster['subnets']['ipoib']['total_ipv4']   %}
+{% set ip = cluster['subnets']['ipoib']['range_start'] %}
+{%- for node in compute_nodes -%}
+{% set counter=True %}
+{%- if start < 254 and count < max %} 
+{{ node }} IN A 172.16.{{ ip }}.{{ start }} 
+{%- set count=count+1 %}
+{%- set start=start+1 %}
+{%- set counter=False %}
+{%- endif %} 
+{%- if counter and count < max -%} 
+{%- set start=1 %}
+{%- set ip=ip+1 %}
+{{ node }} IN A 172.16.{{ ip }}.{{ start }} 
+{%- set count=count+1 %}
+{%- set start=start+1 %}
+{%- endif -%}
+{%- endfor -%}

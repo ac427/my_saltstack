@@ -13,29 +13,47 @@ make sure bind is installed:
 copy zone file for {{ cluster['subnets'][subnet]['name'] }}:
   file.managed:
     - name: {{ map.named_working_directory }}/{{ cluster['subnets'][subnet]['file'] }}
-    - user: root
-    - group: root
-    - mode: 440
+    - user: named
+    - group: named
+    - mode: 444
     - template: jinja
     - source: salt://bind/files/var/named/{{cluster['subnets'][subnet]['file']}}.j2
 {% endfor %} 
 
+copy 0.0.127.in-addr.arpa.zone:
+  file.managed:
+    - name: {{ map.named_working_directory }}/0.0.127.in-addr.arpa.zone
+    - user: named
+    - group: named
+    - mode: 444
+    - template: jinja
+    - source: salt://bind/files/var/named/0.0.127.in-addr.arpa.zone.j2
+
 copy 16.172.in-addr.arpa.zone:
   file.managed:
     - name: {{ map.named_working_directory }}/16.172.in-addr.arpa.zone
-    - user: root
-    - group: root
-    - mode: 440
+    - user: named
+    - group: named
+    - mode: 444
     - template: jinja
     - source: salt://bind/files/var/named/16.172.in-addr.arpa.zone.j2
+
+copy localhost.zone:
+  file.managed:
+    - name: {{ map.named_working_directory }}/localhost.zone
+    - user: named
+    - group: named
+    - mode: 444
+    - template: jinja
+    - source: salt://bind/files/var/named/localhost.zone.j2
 
 
 copy the named.conf file:
   file.managed:
     - name: {{ map.config }}
-    - user: root
-    - group: root
-    - mode: 440
+    - user: named
+    - group: named
+    - mode: 444
     - template: jinja
     - source: salt://bind/files/etc/named.conf.j2
     - check_cmd: named-checkconf 

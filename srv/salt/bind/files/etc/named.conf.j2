@@ -20,10 +20,11 @@ options {
   notify no;
 };
 
-zone "." in {
+{# zone "." in {
   type hint;
   file "root.hint";
 };
+#}
 
 zone "localhost" in {
   type master;

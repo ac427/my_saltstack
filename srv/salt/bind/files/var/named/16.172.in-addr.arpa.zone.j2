@@ -5,7 +5,7 @@
 
 
 $TTL 300
-@                       IN      SOA     172.16.1.11. master.cluster. (
+@                       IN      SOA     172.16.1.11. admin.cluster. (
                                         {{ serial }}  ; Serial
                                         600         ; Refresh
                                         1800         ; Retry
@@ -13,11 +13,11 @@ $TTL 300
                                         300          ; TTL
                                         )
 
-                        IN      NS      172.16.1.11.
+                        IN      NS      {{ cluster['name-server'] }}.
 
 
 {%- for subnet in cluster['subnets'] -%}
-{% set count = 1 %}
+{% set count = 0 %}
 {% set start = 1 %}
 {% set ip = cluster['subnets'][subnet]['range_start'] %}
 {% set max = cluster['subnets'][subnet]['total_ipv4']   %}
