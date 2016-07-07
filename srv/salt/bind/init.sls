@@ -16,7 +16,6 @@ make sure bind is installed:
   service.running:
     - name: {{ map.service }}
     - enable: True
-    - reload: True
 
 {% for subnet in cluster['subnets'] %}
 copy zone file for {{ cluster['subnets'][subnet]['name'] }}:
@@ -67,3 +66,9 @@ copy the named.conf file:
     - source: salt://bind/files/etc/named.conf.j2
     - check_cmd: named-checkconf 
 
+restart named.service:
+  service.running:
+    - name: {{ map.service }} 
+    - force_restart: True
+    - watch:
+      - file: {{ map.named_working_directory }}/16.172.in-addr.arpa.zone 
