@@ -8,8 +8,8 @@ ddns-update-style none;
 # subnet {{ subnet }}
 subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets'][subnet]['netmask'] }} {
   option domain-name "{{ cluster['subnets'][subnet]['name'] }}";
-  option domain-name-servers {{ cluster['domain-name-servers'] }};
-  option subnet-mask 255.255.0.0;
+  option domain-name-servers {{ cluster['domain-name-servers'] }} ;
+  option subnet-mask {{ cluster['subnets'][subnet]['netmask'] }} ;
   default-lease-time 21600;
   max-lease-time 43200;
  
@@ -22,7 +22,8 @@ subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets']
 {%- if compute_nodes[node]['interfaces'][subnet]['dhcp_group'] is defined and compute_nodes[node]['interfaces'][subnet]['dhcp_group'] == dhcp_group %}
     host {{ node }}.{{ cluster['subnets'][subnet]['name'] }} {
         hardware ethernet {{ compute_nodes[node]['interfaces'][subnet]['mac'] }};
-        fixed-address {{cluster['subnets'][subnet]['netid']}}.{{compute_nodes[node]['hostid'] }}; }
+        fixed-address {{ node }}.{{ cluster['subnets'][subnet]['name'] }}; }
+{#        fixed-address {{cluster['subnets'][subnet]['netid']}}.{{compute_nodes[node]['hostid'] }}; } #}
 {%- endif %}
 {%- endfor %} {# end of node loop #} 
   }
@@ -35,7 +36,8 @@ subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets']
 {%- if compute_nodes[node]['interfaces'][subnet]['dhcp_group'] is undefined  %}
     host {{ node }}.{{ cluster['subnets'][subnet]['name'] }} {
         hardware ethernet {{ compute_nodes[node]['interfaces'][subnet]['mac'] }};
-        fixed-address {{cluster['subnets'][subnet]['netid']}}.{{compute_nodes[node]['hostid'] }}; }
+        fixed-address {{ node }}.{{ cluster['subnets'][subnet]['name'] }}; }
+
 {%- endif %}
 {%- endfor %} {# end of node loop #}
   }

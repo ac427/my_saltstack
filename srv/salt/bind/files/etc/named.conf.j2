@@ -14,9 +14,10 @@ options {
   allow-query {
     127.0.0.1;
     172.16.0.0/16;
+    172.17.0.0/16;
+    172.18.0.0/16;
   };
   notify no;
-  include "/etc/named.conf.global.options.include";
 };
 
 zone "." in {
@@ -37,11 +38,16 @@ zone "0.0.127.in-addr.arpa" in {
 
 {%- for networks in cluster['subnets'] %}
 
-zone "{{ cluster['subnets'][networks]['zone']['name'] }}" in {
+zone "{{ cluster['subnets'][networks]['name'] }}" in {
      type master;
-     file "{{ cluster['subnets'][networks]['zone']['name'] }}"
+     file "{{ cluster['subnets'][networks]['file'] }}" ;
      allow-update { any; };
     notify no;
 };
+
 {%- endfor %}
 
+zone "16.172.in-addr.arpa" in {
+  type master;
+  file "16.172.in-addr.arpa.zone";
+};

@@ -4,43 +4,37 @@ cluster:
 
   subnets:
     internal:
-      netid: 172.16
       name: eth.cluster
-      eth.cluster:
-        file: internal.cluster.zone
-      zone: 
-        name: 16.172.in-addr
-        file: 16.172.in-addr.arpa
+      file: internal.cluster.zone
       network: 172.16.0.0
-      netmask: 255.255.0.0
+      range_start: 0
+      netmask: 255.255.192.0
+      broadcast: 172.16.63.255
+      total_ipv4: 16384
       dhcp_groups:
         - uefi
         - legacy
 
     ipmi:
-      netid: 172.17
       name: ipmi.cluster
-      ipmi.cluster:
-        file: ipmi.cluster.zone
-      zone: 
-        name: 17.172.in-addr
-        file: 17.172.in-addr.arpa
-      network: 172.17.0.0
-      netmask: 255.255.0.0
+      file: ipmi.cluster.zone
+      network: 172.16.64.0
+      range_start: 64
+      netmask: 255.255.192.0
+      broadcast: 172.16.127.255
+      total_ipv4: 16384
       dhcp_groups:
         - uefi
         - legacy
 
     ipoib:
-      netid: 172.18
       name: ipoib.cluster
-      ipoib.cluster:
-        file: ipoib.cluster.zone
-      zone:
-        name: 18.172.in-addr
-        file: 18.172.in-addr.arpa
-      network: 172.18.0.0
-      netmask: 255.255.0.0
+      file: ipoib.cluster.zone
+      network: 172.16.128.0
+      range_start: 128
+      netmask: 255.255.192.0
+      broadcast: 172.16.191.255
+      total_ipv4: 16384
       dhcp_groups:
         - uefi
         - legacy
