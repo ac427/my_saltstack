@@ -18,7 +18,7 @@ $TTL 300
 
 {%- for subnet in cluster['subnets'] -%}
 {% set count = 0 %}
-{% set start = 1 %}
+{% set start = 2 %}
 {% set ip = cluster['subnets'][subnet]['range_start'] %}
 {% set max = cluster['subnets'][subnet]['total_ipv4']   %}
 {%- if count == max -%}

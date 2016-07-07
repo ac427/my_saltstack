@@ -1,6 +1,15 @@
 {% from "bind/map.jinja" import map with context %}
 {% set cluster = pillar.get('cluster', {}) -%}
 
+
+{% if not pillar.get('serial') %}
+make sure serial number is passed:
+  report:
+    - bind_error
+    - name: "make sure you pass the bind serial; example: salt 'admin*' state.apply bind pillar='{\"serial\": \"1234569\"}' "
+    - failhard: True
+{% endif %}
+
 make sure bind is installed:
   pkg.installed:
     - pkgs: {{ map.pkgs|json }}

@@ -3,13 +3,12 @@ compute_nodes:
     interfaces: 
       internal:
         dhcp_group: uefi
-        mac: 08:00:27:cb:ed:16
-      ipmi:
         mac: 08:00:27:cb:ed:17
+      ipmi:
+        mac: 08:00:27:cb:ad:17
       ipoib:
         dhcp_group: uefi
         mac: 08:00:27:cb:ed:19
-    hostid: 1.101
 
   compute2:
     interfaces:
@@ -22,7 +21,6 @@ compute_nodes:
       ipoib:
         dhcp_group: uefi
         mac: 08:00:27:cb:ed:14
-    hostid: 2.102
     
   compute3:
     interfaces:
@@ -32,5 +30,4 @@ compute_nodes:
         mac: 08:00:27:cb:ed:10
       ipoib:
         mac: 08:00:27:cb:ed:11
-    hostid: 3.102
     
