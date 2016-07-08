@@ -2,7 +2,7 @@
 {% set cluster = pillar.get('cluster', {}) -%}
 {% for serial = salt['cmd.run']('date +%s') %}
 $TTL 300
-@                       IN      SOA     172.16.1.11. master.home. (
+@                       IN      SOA     172.16.1.1. master.home. (
                                         {{ serial}}  ; Serial
                                         600         ; Refresh
                                         1800         ; Retry
@@ -10,7 +10,7 @@ $TTL 300
                                         300          ; TTL
                                         )
 
-                        IN      NS      172.16.1.11.
+                        IN      NS      172.16.1.1.
 
 
 salt  CNAME  admin;

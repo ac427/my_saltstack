@@ -1,6 +1,6 @@
 cluster:
-  domain-name-servers: 172.16.1.11
-  next-server: 172.16.1.11
+  domain-name-servers: 172.16.1.1
+  next-server: 172.16.1.1
   name-server: master.cluster
 
   subnets:
