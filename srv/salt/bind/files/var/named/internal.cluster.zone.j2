@@ -3,7 +3,7 @@
 {% set cluster = pillar.get('cluster', {}) -%}
 
 $TTL 1W
-@               IN SOA          master.eth.cluster.   root.eth.cluster. (
+@               IN SOA          master.internal.cluster.   root.internal.cluster. (
                                 {{ serial }}               ; serial
                                 2D              ; refresh
                                 4H              ; retry

@@ -5,7 +5,7 @@ cluster:
 
   subnets:
     internal:
-      name: eth.cluster
+      name: internal.cluster
       file: internal.cluster.zone
       network: 172.16.0.0
       range_start: 0
