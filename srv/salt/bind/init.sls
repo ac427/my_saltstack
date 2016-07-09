@@ -37,14 +37,32 @@ copy 0.0.127.in-addr.arpa.zone:
     - template: jinja
     - source: salt://bind/files/var/named/0.0.127.in-addr.arpa.zone.j2
 
-copy 16.172.in-addr.arpa.zone:
+copy 0.16.172.in-addr.arpa.zone:
   file.managed:
-    - name: {{ map.named_working_directory }}/16.172.in-addr.arpa.zone
+    - name: {{ map.named_working_directory }}/0.16.172.in-addr.arpa.zone
     - user: named
     - group: named
     - mode: 444
     - template: jinja
-    - source: salt://bind/files/var/named/16.172.in-addr.arpa.zone.j2
+    - source: salt://bind/files/var/named/0.16.172.in-addr.arpa.zone.j2
+
+copy 64.16.172.in-addr.arpa.zone:
+  file.managed:
+    - name: {{ map.named_working_directory }}/64.16.172.in-addr.arpa.zone
+    - user: named
+    - group: named
+    - mode: 444
+    - template: jinja
+    - source: salt://bind/files/var/named/64.16.172.in-addr.arpa.zone.j2
+
+copy 128.16.172.in-addr.arpa.zone:
+  file.managed:
+    - name: {{ map.named_working_directory }}/128.16.172.in-addr.arpa.zone
+    - user: named
+    - group: named
+    - mode: 444
+    - template: jinja
+    - source: salt://bind/files/var/named/128.16.172.in-addr.arpa.zone.j2
 
 copy localhost.zone:
   file.managed:
@@ -71,4 +89,4 @@ restart named.service:
     - name: {{ map.service }} 
     - force_restart: True
     - watch:
-      - file: {{ map.named_working_directory }}/16.172.in-addr.arpa.zone 
+      - file: {{ map.named_working_directory }}/*
