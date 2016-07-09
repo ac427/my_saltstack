@@ -2,6 +2,7 @@
 {% set cluster = pillar.get('cluster', {}) -%}
 {% set iteration = (((compute_nodes|length + 253) - 1)/253)|int %}
 {% set serial = pillar.get('serial', {}) -%}
+{% set subnet = 'ipoib' -%}
 
 
 $TTL 300
@@ -18,12 +19,12 @@ $TTL 300
 
 {% set count = 0 %}
 {% set start = 2 %}
-{% set ip = cluster['subnets']['ipoib']['range_start'] %}
-{% set max = cluster['subnets']['ipoib']['total_ipv4']   %}
+{% set ip = cluster['subnets'][subnet]['range_start'] %}
+{% set max = cluster['subnets'][subnet]['total_ipv4']   %}
 {%- for node in compute_nodes -%} 
 {%- if count != max -%}
 {%- if start < 255 -%}
-{{ ip }}.{{ start }} IN  PTR  {{ node }}.{{ cluster['subnets']['ipoib']['name'] }}.;
+{{ ip }}.{{ start }} IN  PTR  {{ node }}.{{ cluster['subnets'][subnet]['name'] }}.;
 {% set count=count+1 %}
 {% set start=start+1 %}
 {%- else -%} 
