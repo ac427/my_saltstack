@@ -20,3 +20,10 @@ copy tftpd config file:
     - mode: 440
     - template: jinja
     - source: salt://tftpd/files/etc/xinetd.d/tftp
+
+create pxelinux.cfg dir:
+  file.directory:
+    - name: /var/lib/tftpboot/pxelinux.cfg/
+    - user: root
+    - group: root
+    - mode: 440
