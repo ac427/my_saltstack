@@ -1,20 +1,16 @@
-DEFAULT menu
-PROMPT 0
-TIMEOUT 200
-TOTALTIMEOUT 6000
-ONTIMEOUT centos7-x86_64
+###INSTALL###
+prompt 0
+timeout 25
+default install
 
 LABEL local
-        MENU LABEL (local)
-        MENU DEFAULT
-        LOCALBOOT -1
+ localboot -1
 
-LABEL centos7-x86_64
+LABEL install 
         kernel /images/centos7-x86_64/vmlinuz
         MENU LABEL centos7-x86_64
-        append initrd=/images/centos7-x86_64/initrd.img ksdevice=bootif lang=  kssendmac text  ks=http://172.16.1.1/install/centos7.ks
+        append  proxy="http://172.16.0.1:3128" initrd=/images/centos7-x86_64/initrd.img ksdevice=bootif syslog=172.16.0.1 lang=en_US  kssendmac text  ks=http://172.16.0.1/install/centos7.ks inst.sshd
         ipappend 2
-
 
 
 MENU end
