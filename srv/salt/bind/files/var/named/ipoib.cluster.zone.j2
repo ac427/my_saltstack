@@ -3,7 +3,7 @@
 {% set cluster = pillar.get('cluster', {}) -%}
 
 $TTL 1W
-@               IN SOA          master.internal.cluster.   root.internal.cluster. (
+@               IN SOA          admin.internal.cluster.   root.internal.cluster. (
                                 {{ serial }}               ; serial
                                 2D              ; refresh
                                 4H              ; retry
@@ -12,8 +12,10 @@ $TTL 1W
 
                 IN NS           {{ cluster['name-server'] }}.
 
-{% set count = 0 %}
-{% set start = 1 %}
+admin IN A 172.16.128.1
+
+{% set count = 1 %}
+{% set start = 2 %}
 {% set max = cluster['subnets']['ipoib']['total_ipv4']   %}
 {% set ip = cluster['subnets']['ipoib']['range_start'] %}
 {%- for node in compute_nodes -%}

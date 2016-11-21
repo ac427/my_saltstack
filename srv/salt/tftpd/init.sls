@@ -26,4 +26,4 @@ create pxelinux.cfg dir:
     - name: /var/lib/tftpboot/pxelinux.cfg/
     - user: root
     - group: root
-    - mode: 440
+    - mode: 555
