@@ -1,4 +1,0 @@
-epel-release:
-  pkg:
-    -  installed
-
