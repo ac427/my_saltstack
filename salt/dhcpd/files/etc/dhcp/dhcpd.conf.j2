@@ -1,0 +1,45 @@
+{% set compute_nodes = pillar.get('compute_nodes', {}) -%}
+{% set cluster = pillar.get('cluster', {}) -%}
+
+ddns-update-style none;
+
+{% set inc=0 %}
+{% for subnet in cluster['subnets'] %}
+# subnet {{ subnet }}
+subnet {{ cluster['subnets'][subnet]['network'] }} netmask {{ cluster['subnets'][subnet]['netmask'] }} {
+  option domain-name "{{ cluster['subnets'][subnet]['name'] }}";
+  option domain-name-servers {{ cluster['domain-name-servers'] }} ;
+  option subnet-mask {{ cluster['subnets'][subnet]['netmask'] }} ;
+  default-lease-time 21600;
+  max-lease-time 43200;
+ 
+{%- for dhcp_group in cluster['subnets'][subnet]['dhcp_groups'] %} 
+#{{ dhcp_group }}
+  group {
+    filename "/pxelinux.0";
+    next-server  {{ cluster['next-server'] }};
+{%- for node in compute_nodes %} 
+{%- if compute_nodes[node]['interfaces'][subnet]['dhcp_group'] is defined and compute_nodes[node]['interfaces'][subnet]['dhcp_group'] == dhcp_group %}
+    host {{ node }}.{{ cluster['subnets'][subnet]['name'] }} {
+        hardware ethernet {{ compute_nodes[node]['interfaces'][subnet]['mac'] }};
+        fixed-address {{ node }}.{{ cluster['subnets'][subnet]['name'] }}; }
+{#        fixed-address {{cluster['subnets'][subnet]['netid']}}.{{compute_nodes[node]['hostid'] }}; } #}
+{%- endif %}
+{%- endfor %} {# end of node loop #} 
+  }
+{%- endfor %} {# end of dhcp_group loop #} 
+# default 
+  group {
+    filename "/pxelinux.1";
+    next-server  {{ cluster['next-server'] }};
+{%- for node in compute_nodes %}
+{%- if compute_nodes[node]['interfaces'][subnet]['dhcp_group'] is undefined  %}
+    host {{ node }}.{{ cluster['subnets'][subnet]['name'] }} {
+        hardware ethernet {{ compute_nodes[node]['interfaces'][subnet]['mac'] }};
+        fixed-address {{ node }}.{{ cluster['subnets'][subnet]['name'] }}; }
+
+{%- endif %}
+{%- endfor %} {# end of node loop #}
+  }
+}
+{%- endfor %} {# end of subnet loop #} 

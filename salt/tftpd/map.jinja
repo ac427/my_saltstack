@@ -1,0 +1,14 @@
+{% set map = salt['grains.filter_by']({
+    'Debian': {
+        'root': '/var/lib/tftpboot',
+        'config': '/etc/xinetd.d/tftp', 
+    },
+    'RedHat': {
+        'root': '/var/lib/tftpboot',
+        'pxe_cfg': '/var/lib/tftpboot/pxelinux.cfg',
+        'tftp_config': '/etc/xinetd.d/tftp',
+        'pkgs': ['xinetd', 'tftp-server', 'tftp'], 
+        'services': ['xinetd', 'tftp'], 
+    },
+}, merge=salt['pillar.get']('tftpd:lookup')) %}
+

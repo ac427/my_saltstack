@@ -1,0 +1,5 @@
+{% set sudoers = pillar.get('sudoers', {}) -%}
+{%- for group in sudoers %}
+User_Alias {{ group }} = {{ sudoers[group]['uname']|join(',') }}
+{{ group }} ALL =   {{ sudoers[group]['cmd']|join(',') }}
+{%- endfor -%}

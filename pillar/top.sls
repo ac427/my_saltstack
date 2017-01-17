@@ -1,0 +1,5 @@
+base:
+  '*':
+    - nodes
+    - sudoers
+    - cluster

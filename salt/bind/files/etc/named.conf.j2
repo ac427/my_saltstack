@@ -1,0 +1,64 @@
+{% set cluster = pillar.get('cluster', {}) -%}
+{% set nodes = pillar.get('nodes', {}) -%}
+
+options {
+  directory "/var/named";
+  dump-file "/var/log/named_dump.db";
+  statistics-file "/var/log/named.stats";
+  forwarders {
+    8.8.8.8;
+    8.8.4.4;
+  };
+  forward only;
+  listen-on-v6 { any; };
+  allow-query {
+    127.0.0.1;
+    172.16.0.0/16;
+    172.17.0.0/16;
+    172.18.0.0/16;
+  };
+  notify no;
+};
+
+{# zone "." in {
+  type hint;
+  file "root.hint";
+};
+#}
+
+zone "localhost" in {
+  type master;
+  file "localhost.zone";
+};
+
+zone "0.0.127.in-addr.arpa" in {
+  type master;
+  file "0.0.127.in-addr.arpa.zone";
+};
+
+
+{%- for networks in cluster['subnets'] %}
+
+zone "{{ cluster['subnets'][networks]['name'] }}" in {
+     type master;
+     file "{{ cluster['subnets'][networks]['file'] }}" ;
+     allow-update { any; };
+    notify no;
+};
+
+{%- endfor %}
+
+zone "0.16.172.in-addr.arpa" in {
+  type master;
+  file "0.16.172.in-addr.arpa.zone";
+};
+
+zone "64.16.172.in-addr.arpa" in {
+  type master;
+  file "64.16.172.in-addr.arpa.zone";
+};
+
+zone "128.16.172.in-addr.arpa" in {
+  type master;
+  file "128.16.172.in-addr.arpa.zone";
+};

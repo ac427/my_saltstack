@@ -1,0 +1,4 @@
+gmond:
+  pkg:
+    -  installed
+
