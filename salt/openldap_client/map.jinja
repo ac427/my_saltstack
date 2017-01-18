@@ -1,0 +1,8 @@
+{% set openldap_client = salt['grains.filter_by']({
+    'Debian': {
+        'pkgs': ['openldap-clients','nss-pam-ldapd'],
+    },
+    'RedHat': {
+        'pkgs': ['openldap-clients','nss-pam-ldapd'],
+	},
+}) %}
