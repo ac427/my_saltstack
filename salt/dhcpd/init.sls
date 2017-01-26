@@ -8,6 +8,9 @@ make sure dhcpd is installed:
     - enable: True
     - require:
       - pkg: {{ dhcpd.server }}
+    - restart: True
+    - watch:
+      - file: /etc/dhcp/dhcpd.conf
   file.managed:
     - name: {{ dhcpd.config }}
     - user: root

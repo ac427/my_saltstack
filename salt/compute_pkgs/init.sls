@@ -4,4 +4,5 @@ compute_pkgs:
     - pkgs:
       - nano
       - wget
+      - munge
    

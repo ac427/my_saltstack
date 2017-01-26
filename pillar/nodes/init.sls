@@ -55,4 +55,16 @@ compute_nodes:
         mac: 09:00:27:cb:ed:10
       ipoib:
         dhcp_group: uefi
-        mac: 07:00:27:cb:ed:11
+        mac: 07:00:27:cb:ED:11
+  
+  service001:
+    interfaces:
+      internal:
+        dhcp_group: uefi
+        mac: 08:00:27:f7:47:da 
+      ipmi:
+        dhcp_group: uefi
+        mac: 09:00:27:F7:47:DA
+      ipoib:
+        dhcp_group: uefi
+        mac: 07:00:27:F7:47:DA
