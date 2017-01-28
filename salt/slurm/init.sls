@@ -1,0 +1,26 @@
+slurm pkgs:
+  pkg:
+    - installed
+    - pkgs:
+      - munge
+      - munge-devel
+      - mariadb-server 
+      - mariadb-devel
+      - rng-tools
+      - openssl
+      - openssl-devel
+      - pam-devel
+      - numactl
+      - numactl-devel
+      - hwloc
+      - hwloc-devel
+      - lua
+      - lua-devel
+      - readline-devel
+      - rrdtool-devel
+      - ncurses-devel
+      - man2html
+      - libibmad
+      - libibumad
+      - rpm-build
+      - perl-ExtUtils-MakeMaker
