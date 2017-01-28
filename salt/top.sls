@@ -3,8 +3,9 @@ base:
     - vim
     - epel
     - openldap_client
+    - base
   'compute*':
-    - compute_pkgs
+    - compute
     - vim
     - epel
     - openldap_client
@@ -13,3 +14,5 @@ base:
     - dhcpd
     - tftpd
     - named
+  'service001':
+    - slurm

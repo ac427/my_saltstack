@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# ldapadd -x -D cn=Manager,dc=cm,dc=cluster -W -f foo.ldif
 USER_NAME=$1
 THE_EMAIL=$2
 LDIFFILE="${USER_NAME}.ldif"
@@ -15,16 +15,17 @@ if [ -z "$PUID" ] ; then
 fi
 
 
-echo "dn: uid=${USER_NAME},dc=cm,dc=cluster" >> ${LDIFFILE}
+echo "dn: cn=${USER_NAME},ou=People,dc=cm,dc=cluster" >> ${LDIFFILE}
 echo "uid: ${USER_NAME}" >> ${LDIFFILE}
 echo "objectClass: inetOrgPerson" >> ${LDIFFILE}
 echo "objectClass: posixAccount" >> ${LDIFFILE}
 echo "objectClass: shadowAccount" >> ${LDIFFILE}
+echo "objectClass: person" >> ${LDIFFILE}
 echo "loginShell: /bin/bash" >> ${LDIFFILE}
 echo "uidNumber: ${PUID}" >> ${LDIFFILE}
 echo "gidNumber: ${PUID}" >> ${LDIFFILE}
-echo "cn: ${USER_NAME}" >> ${LDIFFILE}
-echo "homeDirectory: /home/${USER_NAME}" >> ${LDIFFILE}
+#echo "cn: ${USER_NAME}" >> ${LDIFFILE}
+echo "homeDirectory: /net/admin/data/home/${USER_NAME}" >> ${LDIFFILE}
 echo "sn: ${USER_NAME}" >> ${LDIFFILE}
 echo "mail: ${THE_EMAIL}" >> ${LDIFFILE}
 echo "" >> ${LDIFFILE}
