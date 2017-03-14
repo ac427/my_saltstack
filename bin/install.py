@@ -1,5 +1,7 @@
+### This script changes the boot option to HDD at the end of kickstart install
 from bottle import route, run, template
 import subprocess
+
 
 @route('/set_default/<name>')
 def index(name):
