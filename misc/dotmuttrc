@@ -1,6 +1,7 @@
 set from = "foo@gmail.com"
 set realname = "Foo Bar"
 set imap_user = 'foo@gmail.com'
+#set imap_pass = '' # null, will prompt for password
 set imap_pass = 'yourpassword'
 set folder = imaps://imap.gmail.com/
 set spoolfile = +INBOX
